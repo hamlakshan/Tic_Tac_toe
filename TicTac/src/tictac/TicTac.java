@@ -18,8 +18,8 @@ public class TicTac {
         Front front=new Front();
         front.setVisible(true);
         front.setTitle("Tic Tac Toe");
-        front.load.initialize();
-        front.load.setVisible(false);
+//        front.load.initialize();
+     //   front.load.setVisible(false);
         
     }
 }
