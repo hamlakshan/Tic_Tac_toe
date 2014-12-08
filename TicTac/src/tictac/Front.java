@@ -28,36 +28,37 @@ public class Front extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        newGame = new javax.swing.JButton();
+        MultiPlayerButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        singlePlayerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setForeground(new java.awt.Color(153, 153, 255));
         jPanel1.setLayout(null);
 
-        newGame.setBackground(new java.awt.Color(0, 0, 0));
-        newGame.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
-        newGame.setForeground(new java.awt.Color(65, 177, 230));
-        newGame.setText("Multiplayers");
-        newGame.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        newGame.setBorderPainted(false);
-        newGame.setDefaultCapable(false);
-        newGame.addActionListener(new java.awt.event.ActionListener() {
+        MultiPlayerButton.setBackground(new java.awt.Color(0, 0, 0));
+        MultiPlayerButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
+        MultiPlayerButton.setForeground(new java.awt.Color(255, 255, 255));
+        MultiPlayerButton.setText("Multi Player");
+        MultiPlayerButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        MultiPlayerButton.setBorderPainted(false);
+        MultiPlayerButton.setDefaultCapable(false);
+        MultiPlayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newGameActionPerformed(evt);
+                MultiPlayerButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(newGame);
-        newGame.setBounds(60, 280, 210, 35);
+        jPanel1.add(MultiPlayerButton);
+        MultiPlayerButton.setBounds(60, 290, 210, 40);
 
         exitButton.setBackground(new java.awt.Color(0, 0, 0));
         exitButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
-        exitButton.setForeground(new java.awt.Color(65, 177, 230));
+        exitButton.setForeground(new java.awt.Color(255, 255, 255));
         exitButton.setText("Exit");
-        exitButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        exitButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         exitButton.setBorderPainted(false);
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,26 +66,26 @@ public class Front extends javax.swing.JFrame {
             }
         });
         jPanel1.add(exitButton);
-        exitButton.setBounds(60, 380, 210, 31);
+        exitButton.setBounds(60, 370, 210, 40);
 
-        jLabel1.setForeground(new java.awt.Color(51, 153, 255));
+        jLabel1.setForeground(new java.awt.Color(102, 102, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tictac/tict.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(30, 0, 280, 330);
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(65, 177, 230));
-        jButton1.setText("Single Player");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setBorderPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        singlePlayerButton.setBackground(new java.awt.Color(0, 0, 0));
+        singlePlayerButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
+        singlePlayerButton.setForeground(new java.awt.Color(255, 255, 255));
+        singlePlayerButton.setText("Single Player");
+        singlePlayerButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        singlePlayerButton.setBorderPainted(false);
+        singlePlayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                singlePlayerButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(60, 330, 210, 30);
+        jPanel1.add(singlePlayerButton);
+        singlePlayerButton.setBounds(60, 330, 210, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,29 +101,29 @@ public class Front extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
    
-    private void newGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameActionPerformed
+    private void MultiPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MultiPlayerButtonActionPerformed
         // TODO add your handling code here:
         Players players=new Players();
         players.setTitle("Tic Tac Toe");
         players.setSize(330,430);
         players.setVisible(rootPaneCheckingEnabled);
         this.setVisible(false);
-    }//GEN-LAST:event_newGameActionPerformed
+    }//GEN-LAST:event_MultiPlayerButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void singlePlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singlePlayerButtonActionPerformed
         // TODO add your handling code here:
-        SinglePlayerGame inter=new SinglePlayerGame("You", "Computer");
-        inter.setVisible(rootPaneCheckingEnabled);
-        inter.setTitle("Tic Tac Toe ");
-        inter.setSize(320,430);
-        inter.setMaximizedBounds(null);
-        setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        PlayerName player=new PlayerName();
+        player.setVisible(rootPaneCheckingEnabled);
+        player.setSize(330, 430);
+        player.setLocationRelativeTo(null);
+        this.setVisible(false);
+        
+    }//GEN-LAST:event_singlePlayerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,10 +160,10 @@ public class Front extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton MultiPlayerButton;
     private javax.swing.JButton exitButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton newGame;
+    private javax.swing.JButton singlePlayerButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,10 +18,10 @@ public class Players extends javax.swing.JFrame {
         setLocation(500, 200);
     }
     public void init(){
-        Tic tic=new Tic(player1.getText(),player2.getText());
+        MultiPlayerGame tic=new MultiPlayerGame(player1.getText(),player2.getText());
         tic.setVisible(true);
         tic.setTitle("Tic Tac Toe");
-        tic.setSize(329, 429);
+        tic.setSize(520, 460);
         setVisible(false);
         
         

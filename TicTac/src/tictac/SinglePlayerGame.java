@@ -26,15 +26,18 @@ public class SinglePlayerGame extends javax.swing.JFrame {
     public int[] mymove=new int[5];
     public int[] playermove= new int[5];
     int count=0;
+    int comscore,playerscore;
     ImageIcon cross;
     ImageIcon ovel;
     ImageIcon box;
     Players player;
     String player1Name;
-    String player2Name;
+    String Computer;
     ImageIcon icon1;
+    int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0,temp=0;
+    int winner=0,play_first=0;
     
-    public SinglePlayerGame(String player1Name, String Player2Name){
+    public SinglePlayerGame(String player1Name, String computer){
         initComponents();
         innitialize();
         for(int i=0;i<9;i++){
@@ -43,19 +46,24 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         setLocation(500, 200);
         cross=new ImageIcon("Cross.png");
         ovel=new ImageIcon("oo.png");
-        box=new ImageIcon("tinker.gif");
+        box=new ImageIcon("t.png");
         player=new Players();
        this.player1Name=player1Name;
-       this.player2Name=Player2Name;
+       this.Computer=computer;
+       comscore=0;
+       playerscore=0;
+    } 
+
+    private SinglePlayerGame() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-     
-    
-    public SinglePlayerGame() {
-         
-     }
-    
-     
     public void innitialize(){
+        for(int i=0;i<9;i++){
+            occupied[i]=false;
+        }
+        playerScoreText.setText(String.valueOf(playerscore));
+        computerScoreText.setText(String.valueOf(comscore));
+        count=0;
         gameButton[0]=gameButton1;
         gameButton[1]=gameButton2;
         gameButton[2]=gameButton3;
@@ -65,7 +73,28 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         gameButton[6]=gameButton7;
         gameButton[7]=gameButton8;
         gameButton[8]=gameButton9;
+        gameButton1.setIcon(null);
+        gameButton2.setIcon(null);
+        gameButton3.setIcon(null);
+        gameButton4.setIcon(null);
+        gameButton5.setIcon(null);
+        gameButton6.setIcon(null);
+        gameButton7.setIcon(null);
+        gameButton8.setIcon(null);
+        gameButton9.setIcon(null);
         
+        a=0;
+        b=0;
+        c=0;
+        d=0;
+        e=0;
+        f=0;
+        g=0;
+        h=0;
+        i=0;
+        temp=0;
+        winner=0;
+        play_first=0;
         
     }
 
@@ -90,21 +119,25 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         gameButton8 = new javax.swing.JButton();
         gameButton9 = new javax.swing.JButton();
         beginButton = new javax.swing.JButton();
+        resetButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        computerScoreText = new javax.swing.JLabel();
+        playerScoreText = new javax.swing.JLabel();
+        score = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setForeground(new java.awt.Color(153, 51, 255));
         jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Papyrus", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tic Tac Toe");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(30, 50, 260, 41);
+        jLabel1.setBounds(140, 50, 260, 41);
 
         gameButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,7 +221,19 @@ public class SinglePlayerGame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(beginButton);
-        beginButton.setBounds(60, 350, 100, 40);
+        beginButton.setBounds(40, 350, 100, 40);
+
+        resetButton.setBackground(new java.awt.Color(0, 0, 0));
+        resetButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
+        resetButton.setForeground(new java.awt.Color(65, 177, 230));
+        resetButton.setText("Reset");
+        resetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(resetButton);
+        resetButton.setBounds(160, 350, 120, 40);
 
         exitButton.setBackground(new java.awt.Color(0, 0, 0));
         exitButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
@@ -200,29 +245,73 @@ public class SinglePlayerGame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(exitButton);
-        exitButton.setBounds(170, 350, 90, 40);
+        exitButton.setBounds(400, 350, 100, 40);
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 102));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tictac/tumblr_static_elsa.png"))); // NOI18N
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jLabel2.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        jLabel2.setText("Computer Score");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 320, 400);
+        jLabel2.setBounds(280, 250, 160, 40);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 300, 400);
+        computerScoreText.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        computerScoreText.setText("        ");
+        jPanel1.add(computerScoreText);
+        computerScoreText.setBounds(440, 250, 50, 40);
+
+        playerScoreText.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        playerScoreText.setText("     ");
+        jPanel1.add(playerScoreText);
+        playerScoreText.setBounds(440, 190, 50, 40);
+
+        score.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        score.setText("PlayerScore");
+        jPanel1.add(score);
+        score.setBounds(280, 190, 130, 40);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tictac/tumblr_static_elsa.png"))); // NOI18N
+        jLabel3.setText("jLabel3");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(20, 30, 510, 460);
+
+        backButton.setBackground(new java.awt.Color(0, 0, 0));
+        backButton.setFont(new java.awt.Font("Plantagenet Cherokee", 1, 24)); // NOI18N
+        backButton.setForeground(new java.awt.Color(65, 177, 230));
+        backButton.setText("Back");
+        backButton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        backButton.setPreferredSize(new java.awt.Dimension(97, 41));
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(backButton);
+        backButton.setBounds(530, 350, 100, 40);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_exitButtonActionPerformed
+        innitialize();
+    }//GEN-LAST:event_resetButtonActionPerformed
 
     private void gameButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameButton1ActionPerformed
         // TODO add your handling code here:
         gameButton1.setIcon(ovel);
         count++;
+        a=1;
         occupied[0]=true;
         System.out.println("button 1 pressed");
         com_move();
@@ -231,6 +320,10 @@ public class SinglePlayerGame extends javax.swing.JFrame {
 
     private void beginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beginButtonActionPerformed
         // TODO add your handling code here:
+          if(count==0)
+              play_first=1;
+          else
+              play_first=0;
           com_move();
     }//GEN-LAST:event_beginButtonActionPerformed
 
@@ -238,6 +331,7 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         // TODO add your handling code here:
          gameButton2.setIcon(ovel);
         count++;
+        b=1;
         occupied[1]=true;
         System.out.println("button 2 pressed");
         com_move();
@@ -248,6 +342,7 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         // TODO add your handling code here:
         gameButton3.setIcon(ovel);
         count++;
+        c=1;
         occupied[2]=true;
         System.out.println("button 3 pressed");
         com_move();
@@ -259,6 +354,7 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         // TODO add your handling code here:
         gameButton4.setIcon(ovel);
         count++;
+        d=1;
         occupied[3]=true;
         System.out.println("button 4 pressed");
         com_move();
@@ -269,6 +365,7 @@ public class SinglePlayerGame extends javax.swing.JFrame {
         // TODO add your handling code here:
         gameButton5.setIcon(ovel);
         count++;
+        e=1;
         occupied[4]=true;
         System.out.println("button 5 pressed");
         com_move();
@@ -278,6 +375,7 @@ public class SinglePlayerGame extends javax.swing.JFrame {
     private void gameButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameButton6ActionPerformed
 gameButton6.setIcon(ovel);
         count++;
+        f=1;
         occupied[5]=true;
         System.out.println("button 6 pressed");
         com_move();
@@ -289,6 +387,7 @@ gameButton6.setIcon(ovel);
         // TODO add your handling code here:
         gameButton7.setIcon(ovel);
         count++;
+        g=1;
         occupied[6]=true;
         System.out.println("button 7 pressed");
         com_move();
@@ -300,6 +399,7 @@ gameButton6.setIcon(ovel);
         // TODO add your handling code here:
         gameButton8.setIcon(ovel);
         count++;
+        h=1;
         occupied[7]=true;
         System.out.println("button 8 pressed");
         com_move();
@@ -310,11 +410,29 @@ gameButton6.setIcon(ovel);
         // TODO add your handling code here:
         gameButton9.setIcon(ovel);
         count++;
+        i=1;
         occupied[8]=true;
         System.out.println("button 9 pressed");
         com_move();
         select();
     }//GEN-LAST:event_gameButton9ActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        // TODO add your handling code here:
+        new SinglePlayerDA().write(player1Name, playerscore, comscore);
+        System.exit(0);
+        
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        new SinglePlayerDA().write(player1Name, playerscore, comscore);
+        PlayerName player=new PlayerName();
+        player.setVisible(rootPaneCheckingEnabled);
+        player.setSize(330, 430);
+        player.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -351,52 +469,239 @@ gameButton6.setIcon(ovel);
         });
     }
     
-      public void com_move(){
-        if(count==0){
-            first_move();
-        }
-        if(count==2){
-            second_move();
-        }
-        if(count==4){
-            third_move();
-        }
-        if(count==6){
-            fourth_move();
-        }
-        if(count==8){
-            fifth_move();
-        }
-        count++;
-        
+    
+    public void start_game(){
+        temp=0;
+        win_move();
+        block_move();
+        make_move();
+        extra_move();
+        //select();
     }
-    public void user_move(){
-        
-        
+    public void com_move(){
+        System.out.println(" play first "+ play_first+" count "+count);
+        //if condition check weather game is started by player or computer 
+        if(play_first==1){
+            if(count==0)
+                first_move();
+            if(count==1)
+                second_move();
+            if((count==2)||(count==3)||(count==4)||(count==5))
+                start_game();
+            
+        }            
+        if(play_first==0){
+            if(count==1)
+                first_move();
+            if((count==2)||(count==3)||(count==4)||(count==5))
+                start_game();
+        }                
+    }
+    public void win_move(){
+        System.out.println("the win move.......");
+        if ((a==2)&&(b==2)&&(c== 0)&&(temp==0)) 
+		temp=3;
+	if ((a==2)&&(b== 0)&&(c==2)&&(temp==0)) 
+		temp=2;
+	if ((a== 0)&&(b==2)&&(c==2)&&(temp==0)) 
+		temp=1;
+	if ((a==2)&&(d==2)&&(g== 0)&&(temp==0)) 
+		temp=7;
+	if ((a==2)&&(d== 0)&&(g==2)&&(temp==0)) 
+		temp=4;
+	if ((a== 0)&&(d==2)&&(g==2)&&(temp==0)) 
+		temp=1;
+	if ((a==2)&&(e==2)&&(i== 0)&&(temp==0)) 
+		temp=9;
+	if ((a==2)&&(e== 0)&&(i==2)&&(temp==0)) 
+		temp=5;
+	if ((a== 0)&&(e==2)&&(i==2)&&(temp==0)) 
+		temp=1;
+	if ((b==2)&&(e==2)&&(h== 0)&&(temp==0)) 
+		temp=8;
+	if ((b==2)&&(e== 0)&&(h==2)&&(temp==0)) 
+		temp=5;
+	if ((b== 0)&&(e==2)&&(h==2)&&(temp==0)) 
+		temp=2;
+	if ((d==2)&&(e==2)&&(f== 0)&&(temp==0)) 
+		temp=6;
+	if ((d==2)&&(e== 0)&&(f==2)&&(temp==0)) 
+		temp=5;
+	if ((d== 0)&&(e==2)&&(f==2)&&(temp==0)) 
+		temp=4;
+	if ((g==2)&&(h==2)&&(i== 0)&&(temp==0)) 
+		temp=9;
+	if ((g==2)&&(h== 0)&&(i==2)&&(temp==0)) 
+		temp=8;
+	if ((g== 0)&&(h==2)&&(i==2)&&(temp==0)) 
+		temp=7;
+	if ((c==2)&&(f==2)&&(i== 0)&&(temp==0)) 
+		temp=9;
+	if ((c==2)&&(f== 0)&&(i==2)&&(temp==0)) 
+		temp=6;
+	if ((c== 0)&&(f==2)&&(i==2)&&(temp==0)) 
+		temp=3;
+	if ((g==2)&&(e==2)&&(c== 0)&&(temp==0)) 
+		temp=3;
+	if ((g==2)&&(e== 0)&&(c==2)&&(temp==0)) 
+		temp=5;
+	if ((g== 0)&&(e==2)&&(c==2)&&(temp==0)) 
+		temp=7;
+        System.out.println("win move temp  "+temp);
+    }
+    public void block_move() {
+        System.out.println("block move.......");
+	if ((a==1)&&(b==1)&&(c==0)&&(temp==0)) 
+            temp=3;
+	if ((a==1)&&(b==0)&&(c==1)&&(temp==0)) 
+            temp=2;
+	if ((a==0)&&(b==1)&&(c==1)&&(temp==0)) 
+            temp=1;
+	if ((a==1)&&(d==1)&&(g==0)&&(temp==0)) 
+            temp=7;
+	if ((a==1)&&(d==0)&&(g==1)&&(temp==0)) 
+            temp=4;
+	if ((a==0)&&(d==1)&&(g==1)&&(temp==0)) 
+            temp=1;
+	if ((a==1)&&(e==1)&&(i==0)&&(temp==0)) 
+            temp=9;
+	if ((a==1)&&(e==0)&&(i==1)&&(temp==0)) 
+            temp=5;
+	if ((a==0)&&(e==1)&&(i==1)&&(temp==0)) 
+            temp=1;
+	if ((b==1)&&(e==1)&&(h==0)&&(temp==0)) 
+            temp=8;
+	if ((b==1)&&(e==0)&&(h==1)&&(temp==0)) 
+            temp=5;
+	if ((b==0)&&(e==1)&&(h==1)&&(temp==0)) 
+            temp=2;
+	if ((d==1)&&(e==1)&&(f==0)&&(temp==0)) 
+            temp=6;
+	if ((d==1)&&(e==0)&&(f==1)&&(temp==0)) 
+            temp=5;
+	if ((d==0)&&(e==1)&&(f==1)&&(temp==0)) 
+            temp=4;
+	if ((g==1)&&(h==1)&&(i==0)&&(temp==0)) 
+            temp=9;
+	if ((g==1)&&(h==0)&&(i==1)&&(temp==0)) 
+            temp=8;
+	if ((g==0)&&(h==1)&&(i==1)&&(temp==0)) 
+            temp=7;
+	if ((c==1)&&(f==1)&&(i==0)&&(temp==0)) 
+            temp=9;
+	if ((c==1)&&(f==0)&&(i==1)&&(temp==0)) 
+            temp=6;
+	if ((c==0)&&(f==1)&&(i==1)&&(temp==0)) 
+            temp=3;
+	if ((g==1)&&(e==1)&&(c==0)&&(temp==0)) 
+            temp=3;
+	if ((g==1)&&(e==0)&&(c==1)&&(temp==0)) 
+            temp=5;
+	if ((g==0)&&(e==1)&&(c==1)&&(temp==0)) 
+            temp=7;
+        System.out.println("block move temp :"+temp);
     }
     
-    public void play_first(){
-        
-    }
+    public void extra_move(){ 
+        int i=0;
+        if(temp==0){
+            for(i=0;i<9;i++){
+                if(occupied[i]==false){
+                    temp=i+1;
+                    break;
+                }
+            }
+        }
+}
+    public void make_move() {
+        System.out.println("make move ");
+	if ((temp==1)&&(a==0)) {
+            gameButton1.setIcon(cross);
+            a=2;
+            occupied[0]=true;
+            temp=0;
+                
+	}
+	if ((temp==2)&&(b==0)) {
+            gameButton2.setIcon(cross);
+            b=2;
+            occupied[1]=true;
+            temp=0;	
+        }
+	if ((temp==3)&&(c==0)) {
+            gameButton3.setIcon(cross);
+            c=2;
+            occupied[2]=true;
+            temp=0;
+	}
+	if ((temp==4)&&(d==0)) {
+            gameButton4.setIcon(cross);
+            d=2;
+            occupied[3]=true;
+            temp=0;
+	}
+	if ((temp==5)&&(e==0)) {
+            gameButton5.setIcon(cross);
+            e=2;
+            occupied[4]=true;
+            temp=0;
+	}
+	if ((temp==6)&&(f==0)) {
+            gameButton6.setIcon(cross);
+            f=2;
+            occupied[5]=true;
+            temp=0;
+	}
+	if ((temp==7)&&(g==0)) {
+            gameButton7.setIcon(cross);
+            g=2;
+            occupied[6]=true;
+            temp=0;
+	}
+	if ((temp==8)&&(h==0)) {
+            gameButton8.setIcon(cross);
+            h=2;
+            occupied[7]=true;
+            temp=0;
+	}
+	if ((temp==9)&&(i==0)) {
+            gameButton9.setIcon(cross);
+            i=2;
+            occupied[8]=true;
+            temp=0;
+	}
+        System.out.println("make move temp "+temp);
+        select();
+}
+
     
     public void first_move(){
-        mymove[0]=new Random().nextInt(9);
+        while(true){
+            mymove[0]=new Random().nextInt(9);
+            if(occupied[mymove[0]]==false){
+                gameButton[mymove[0]].setIcon(cross);
+                occupied[mymove[0]]=true;
+                break;
+            }                        
+        }
         System.out.println("first move  "+ mymove[0]);
-        gameButton[mymove[0]].setIcon(cross);
-        occupied[mymove[0]]=true;
+        
     }
+    
     
     public void second_move(){
         System.out.println("second move .....");
-        int i,k=mymove[0];
+        int i;
+        int k = mymove[0];
+        System.out.println("k is "+k);
         if(k==0){
             int []arr={1,2,3,4,6,8};
             while(true){
                 i=new Random().nextInt(6);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -407,8 +712,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(4);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -419,8 +724,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(6);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -431,8 +736,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(4);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -443,8 +748,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(8);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -455,8 +760,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(4);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -467,8 +772,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(6);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -479,8 +784,8 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(4);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
@@ -491,1128 +796,86 @@ gameButton6.setIcon(ovel);
                 i=new Random().nextInt(6);
                 if(occupied[i]==false){
                     mymove[1]=arr[i];
-                    gameButton[i].setIcon(cross);
-                    occupied[i]=true;
+                    gameButton[arr[i]].setIcon(cross);
+                    occupied[arr[i]]=true;
                     break;
                 }
             }
         }   
     }
     
-    public void third_move(){
-        int [][]arr={{0,1},{0,2},{0,3},{0,4},{0,6},{0,8},{1,2},{1,4},{1,7},{2,4},{2,5},{2,8},{2,6},{3,4},{3,5},{3,6},{4,5},{4,6},{4,7},{4,8},{5,3},{5,4},{5,2},{5,8},{6,7},{6,8},{7,8}};
-        boolean moved=false;
-        
-        
-        // blocking.......
-        
-        System.out.println("third move.......");
-        
-        while(true){
-            if((playermove[0]==arr[0][0]&&playermove[1]==arr[0][1])||(playermove[1]==arr[0][0]&&playermove[0]==arr[0][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[1][0]&&playermove[1]==arr[1][1])||(playermove[1]==arr[1][0]&&playermove[0]==arr[1][1])){
-                if(occupied[1]==false){
-                    mymove[2]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[2][0]&&playermove[1]==arr[2][1])||(playermove[1]==arr[2][0]&&playermove[0]==arr[2][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[3][0]&&playermove[1]==arr[3][1])||(playermove[1]==arr[3][0]&&playermove[0]==arr[3][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[4][0]&&playermove[1]==arr[4][1])||(playermove[1]==arr[4][0]&&playermove[0]==arr[4][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[5][0]&&playermove[1]==arr[5][1])||(playermove[1]==arr[5][0]&&playermove[0]==arr[5][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[6][0]&&playermove[1]==arr[6][1])||(playermove[1]==arr[6][0]&&playermove[0]==arr[6][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[7][0]&&playermove[1]==arr[7][1])||(playermove[1]==arr[7][0]&&playermove[0]==arr[7][1])){
-                if(occupied[7]==false){
-                    mymove[2]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[8][0]&&playermove[1]==arr[8][1])||(playermove[1]==arr[8][0]&&playermove[0]==arr[8][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[9][0]&&playermove[1]==arr[9][1])||(playermove[1]==arr[9][0]&&playermove[0]==arr[9][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[10][0]&&playermove[1]==arr[10][1])||(playermove[1]==arr[10][0]&&playermove[0]==arr[10][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[11][0]&&playermove[1]==arr[11][1])||(playermove[1]==arr[11][0]&&playermove[0]==arr[11][1])){
-                if(occupied[5]==false){
-                    mymove[2]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[12][0]&&playermove[1]==arr[12][1])||(playermove[1]==arr[12][0]&&playermove[0]==arr[12][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[13][0]&&playermove[1]==arr[13][1])||(playermove[1]==arr[13][0]&&playermove[0]==arr[13][1])){
-                if(occupied[5]==false){
-                    mymove[2]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[14][0]&&playermove[1]==arr[14][1])||(playermove[1]==arr[14][0]&&playermove[0]==arr[14][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[15][0]&&playermove[1]==arr[15][1])||(playermove[1]==arr[15][0]&&playermove[0]==arr[15][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[16][0]&&playermove[1]==arr[16][1])||(playermove[1]==arr[16][0]&&playermove[0]==arr[16][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[17][0]&&playermove[1]==arr[17][1])||(playermove[1]==arr[17][0]&&playermove[0]==arr[17][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[18][0]&&playermove[1]==arr[18][1])||(playermove[1]==arr[18][0]&&playermove[0]==arr[18][1])){
-                if(occupied[1]==false){
-                    mymove[2]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[19][0]&&playermove[1]==arr[19][1])||(playermove[1]==arr[19][0]&&playermove[0]==arr[19][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[20][0]&&playermove[1]==arr[20][1])||(playermove[1]==arr[20][0]&&playermove[0]==arr[20][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[21][0]&&playermove[1]==arr[21][1])||(playermove[1]==arr[21][0]&&playermove[0]==arr[21][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[22][0]&&playermove[1]==arr[22][1])||(playermove[1]==arr[22][0]&&playermove[0]==arr[22][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[23][0]&&playermove[1]==arr[23][1])||(playermove[1]==arr[23][0]&&playermove[0]==arr[23][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[24][0]&&playermove[1]==arr[24][1])||(playermove[1]==arr[24][0]&&playermove[0]==arr[24][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[25][0]&&playermove[1]==arr[25][1])||(playermove[1]==arr[25][0]&&playermove[0]==arr[25][1])){
-                if(occupied[7]==false){
-                    mymove[2]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[26][0]&&playermove[1]==arr[26][1])||(playermove[1]==arr[26][0]&&playermove[0]==arr[26][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            
-            break;
-            
-        }  //end of the while loop which is used to assign the next move which move to block the winning of the player        
-        
-        if(moved==false){
-            while(true){
-            if((mymove[0]==arr[0][0]&&mymove[1]==arr[0][1])||(mymove[1]==arr[0][0]&&mymove[0]==arr[0][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[1][0]&&mymove[1]==arr[1][1])||(mymove[1]==arr[1][0]&&mymove[0]==arr[1][1])){
-                if(occupied[1]==false){
-                    mymove[2]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[2][0]&&mymove[1]==arr[2][1])||(mymove[1]==arr[2][0]&&mymove[0]==arr[2][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[3][0]&&mymove[1]==arr[3][1])||(mymove[1]==arr[3][0]&&mymove[0]==arr[3][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[4][0]&&mymove[1]==arr[4][1])||(mymove[1]==arr[4][0]&&mymove[0]==arr[4][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[5][0]&&mymove[1]==arr[5][1])||(mymove[1]==arr[5][0]&&mymove[0]==arr[5][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[6][0]&&mymove[1]==arr[6][1])||(mymove[1]==arr[6][0]&&mymove[0]==arr[6][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[7][0]&&mymove[1]==arr[7][1])||(mymove[1]==arr[7][0]&&mymove[0]==arr[7][1])){
-                if(occupied[7]==false){
-                    mymove[2]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[8][0]&&mymove[1]==arr[8][1])||(mymove[1]==arr[8][0]&&mymove[0]==arr[8][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[9][0]&&mymove[1]==arr[9][1])||(mymove[1]==arr[9][0]&&mymove[0]==arr[9][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[10][0]&&mymove[1]==arr[10][1])||(mymove[1]==arr[10][0]&&mymove[0]==arr[10][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[11][0]&&mymove[1]==arr[11][1])||(mymove[1]==arr[11][0]&&mymove[0]==arr[11][1])){
-                if(occupied[5]==false){
-                    mymove[2]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[12][0]&&mymove[1]==arr[12][1])||(mymove[1]==arr[12][0]&&mymove[0]==arr[12][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[13][0]&&mymove[1]==arr[13][1])||(mymove[1]==arr[13][0]&&mymove[0]==arr[13][1])){
-                if(occupied[5]==false){
-                    mymove[2]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[14][0]&&mymove[1]==arr[14][1])||(mymove[1]==arr[14][0]&&mymove[0]==arr[14][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[15][0]&&mymove[1]==arr[15][1])||(mymove[1]==arr[15][0]&&mymove[0]==arr[15][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[16][0]&&mymove[1]==arr[16][1])||(mymove[1]==arr[16][0]&&mymove[0]==arr[16][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[17][0]&&mymove[1]==arr[17][1])||(mymove[1]==arr[17][0]&&mymove[0]==arr[17][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[18][0]&&mymove[1]==arr[18][1])||(mymove[1]==arr[18][0]&&mymove[0]==arr[18][1])){
-                if(occupied[1]==false){
-                    mymove[2]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[19][0]&&mymove[1]==arr[19][1])||(mymove[1]==arr[19][0]&&mymove[0]==arr[19][1])){
-                if(occupied[0]==false){
-                    mymove[2]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[20][0]&&mymove[1]==arr[20][1])||(mymove[1]==arr[20][0]&&mymove[0]==arr[20][1])){
-                if(occupied[4]==false){
-                    mymove[2]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[21][0]&&mymove[1]==arr[21][1])||(mymove[1]==arr[21][0]&&mymove[0]==arr[21][1])){
-                if(occupied[3]==false){
-                    mymove[2]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[22][0]&&mymove[1]==arr[22][1])||(mymove[1]==arr[22][0]&&mymove[0]==arr[22][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[23][0]&&mymove[1]==arr[23][1])||(mymove[1]==arr[23][0]&&mymove[0]==arr[23][1])){
-                if(occupied[2]==false){
-                    mymove[2]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[24][0]&&mymove[1]==arr[24][1])||(mymove[1]==arr[24][0]&&mymove[0]==arr[24][1])){
-                if(occupied[8]==false){
-                    mymove[2]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[25][0]&&mymove[1]==arr[25][1])||(mymove[1]==arr[25][0]&&mymove[0]==arr[25][1])){
-                if(occupied[7]==false){
-                    mymove[2]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[26][0]&&mymove[1]==arr[26][1])||(mymove[1]==arr[26][0]&&mymove[0]==arr[26][1])){
-                if(occupied[6]==false){
-                    mymove[2]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            break;
-            
-        }
-            
-        }
-        if(moved==false){
-            int i;
-            while(true){
-                i=new Random().nextInt(9);
-                if(occupied[i]==false){
-                    mymove[2]=i;
-                    occupied[i]=true;
-                    gameButton[i].setIcon(cross);
-                    moved=true;
-                    break;
-                    
-                }
-                
-            }
-        }
-        
-    }
-       
-    public void fourth_move(){
-        int [][]arr={{0,1},{0,2},{0,3},{0,4},{0,6},{0,8},{1,2},{1,4},{1,7},{2,4},{2,5},{2,8},{2,6},{3,4},{3,5},{3,6},{4,5},{4,6},{4,7},{4,8},{5,3},{5,4},{5,2},{5,8},{6,7},{6,8},{7,8}};
-        boolean moved=false;
-        System.out.println("fourth move");
-        while(true){
-            if((playermove[0]==arr[0][0]&&playermove[2]==arr[0][1]) || (playermove[2]==arr[0][0]&&playermove[0]==arr[0][1]) || (playermove[2]==arr[0][0]&&playermove[1]==arr[0][1]) || (playermove[1]==arr[0][0]&&playermove[2]==arr[0][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[1][0]&&playermove[2]==arr[1][1]) || (playermove[2]==arr[1][0]&&playermove[0]==arr[1][1]) || (playermove[2]==arr[1][0]&&playermove[1]==arr[1][1]) || (playermove[1]==arr[1][0]&&playermove[2]==arr[1][1])){
-                if(occupied[1]==false){
-                    mymove[3]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[2][0]&&playermove[2]==arr[2][1]) || (playermove[2]==arr[2][0]&&playermove[0]==arr[2][1]) || (playermove[2]==arr[2][0]&&playermove[1]==arr[2][1]) || (playermove[1]==arr[2][0]&&playermove[2]==arr[2][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[3][0]&&playermove[2]==arr[3][1]) || (playermove[2]==arr[3][0]&&playermove[0]==arr[3][1]) || (playermove[2]==arr[3][0]&&playermove[1]==arr[3][1]) || (playermove[1]==arr[3][0]&&playermove[2]==arr[3][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[4][0]&&playermove[2]==arr[4][1]) || (playermove[2]==arr[4][0]&&playermove[0]==arr[4][1]) || (playermove[2]==arr[4][0]&&playermove[1]==arr[4][1]) || (playermove[1]==arr[4][0]&&playermove[2]==arr[4][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[5][0]&&playermove[2]==arr[5][1]) || (playermove[2]==arr[5][0]&&playermove[0]==arr[5][1]) || (playermove[2]==arr[5][0]&&playermove[1]==arr[5][1]) || (playermove[1]==arr[5][0]&&playermove[2]==arr[5][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[6][0]&&playermove[2]==arr[6][1]) || (playermove[2]==arr[6][0]&&playermove[0]==arr[6][1]) || (playermove[2]==arr[6][0]&&playermove[1]==arr[6][1]) || (playermove[1]==arr[6][0]&&playermove[2]==arr[6][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[7][0]&&playermove[2]==arr[7][1]) || (playermove[2]==arr[7][0]&&playermove[0]==arr[7][1]) || (playermove[2]==arr[7][0]&&playermove[1]==arr[7][1]) || (playermove[1]==arr[7][0]&&playermove[2]==arr[7][1])){
-                if(occupied[7]==false){
-                    mymove[3]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[8][0]&&playermove[2]==arr[8][1]) || (playermove[2]==arr[8][0]&&playermove[0]==arr[8][1]) || (playermove[2]==arr[8][0]&&playermove[1]==arr[8][1]) || (playermove[1]==arr[8][0]&&playermove[2]==arr[8][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[9][0]&&playermove[2]==arr[9][1]) || (playermove[2]==arr[9][0]&&playermove[0]==arr[9][1]) || (playermove[2]==arr[9][0]&&playermove[1]==arr[9][1]) || (playermove[1]==arr[9][0]&&playermove[2]==arr[9][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[10][0]&&playermove[2]==arr[10][1]) || (playermove[2]==arr[10][0]&&playermove[0]==arr[10][1]) || (playermove[2]==arr[10][0]&&playermove[1]==arr[10][1]) || (playermove[1]==arr[10][0]&&playermove[2]==arr[10][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[11][0]&&playermove[2]==arr[11][1]) || (playermove[2]==arr[11][0]&&playermove[0]==arr[11][1]) || (playermove[2]==arr[11][0]&&playermove[1]==arr[11][1]) || (playermove[1]==arr[11][0]&&playermove[2]==arr[11][1])){
-                if(occupied[5]==false){
-                    mymove[3]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[12][0]&&playermove[2]==arr[12][1]) || (playermove[2]==arr[12][0]&&playermove[0]==arr[12][1]) || (playermove[2]==arr[12][0]&&playermove[1]==arr[12][1]) || (playermove[1]==arr[12][0]&&playermove[2]==arr[12][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[13][0]&&playermove[2]==arr[13][1]) || (playermove[2]==arr[13][0]&&playermove[0]==arr[13][1]) || (playermove[2]==arr[13][0]&&playermove[1]==arr[13][1]) || (playermove[1]==arr[13][0]&&playermove[2]==arr[13][1])){
-                if(occupied[5]==false){
-                    mymove[3]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[14][0]&&playermove[2]==arr[14][1]) || (playermove[2]==arr[14][0]&&playermove[0]==arr[14][1]) || (playermove[2]==arr[14][0]&&playermove[1]==arr[14][1]) || (playermove[1]==arr[14][0]&&playermove[2]==arr[14][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[15][0]&&playermove[2]==arr[15][1]) || (playermove[2]==arr[15][0]&&playermove[0]==arr[15][1]) || (playermove[2]==arr[15][0]&&playermove[1]==arr[15][1]) || (playermove[1]==arr[15][0]&&playermove[2]==arr[15][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[16][0]&&playermove[2]==arr[16][1]) || (playermove[2]==arr[16][0]&&playermove[0]==arr[16][1]) || (playermove[2]==arr[16][0]&&playermove[1]==arr[16][1]) || (playermove[1]==arr[16][0]&&playermove[2]==arr[16][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[17][0]&&playermove[2]==arr[17][1]) || (playermove[2]==arr[17][0]&&playermove[0]==arr[17][1]) || (playermove[2]==arr[17][0]&&playermove[1]==arr[17][1]) || (playermove[1]==arr[17][0]&&playermove[2]==arr[17][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[18][0]&&playermove[2]==arr[18][1]) || (playermove[2]==arr[18][0]&&playermove[0]==arr[18][1]) || (playermove[2]==arr[18][0]&&playermove[1]==arr[18][1]) || (playermove[1]==arr[18][0]&&playermove[2]==arr[18][1])){
-                if(occupied[1]==false){
-                    mymove[3]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[19][0]&&playermove[2]==arr[19][1]) || (playermove[2]==arr[19][0]&&playermove[0]==arr[19][1]) || (playermove[2]==arr[19][0]&&playermove[1]==arr[19][1]) || (playermove[1]==arr[19][0]&&playermove[2]==arr[19][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[20][0]&&playermove[2]==arr[20][1]) || (playermove[2]==arr[20][0]&&playermove[0]==arr[20][1]) || (playermove[2]==arr[20][0]&&playermove[1]==arr[20][1]) || (playermove[1]==arr[20][0]&&playermove[2]==arr[20][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[21][0]&&playermove[2]==arr[21][1]) || (playermove[2]==arr[21][0]&&playermove[0]==arr[21][1]) || (playermove[2]==arr[21][0]&&playermove[1]==arr[21][1]) || (playermove[1]==arr[21][0]&&playermove[2]==arr[21][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[22][0]&&playermove[2]==arr[22][1]) || (playermove[2]==arr[22][0]&&playermove[0]==arr[22][1]) || (playermove[2]==arr[22][0]&&playermove[1]==arr[22][1]) || (playermove[1]==arr[22][0]&&playermove[2]==arr[22][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[23][0]&&playermove[2]==arr[23][1]) || (playermove[2]==arr[23][0]&&playermove[0]==arr[23][1]) || (playermove[2]==arr[23][0]&&playermove[1]==arr[23][1]) || (playermove[1]==arr[23][0]&&playermove[2]==arr[23][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[24][0]&&playermove[2]==arr[24][1]) || (playermove[2]==arr[24][0]&&playermove[0]==arr[24][1]) || (playermove[2]==arr[24][0]&&playermove[1]==arr[24][1]) || (playermove[1]==arr[24][0]&&playermove[2]==arr[24][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[25][0]&&playermove[2]==arr[25][1]) || (playermove[2]==arr[25][0]&&playermove[0]==arr[25][1]) || (playermove[2]==arr[25][0]&&playermove[1]==arr[25][1]) || (playermove[1]==arr[25][0]&&playermove[2]==arr[25][1])){
-                if(occupied[7]==false){
-                    mymove[3]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((playermove[0]==arr[26][0]&&playermove[2]==arr[26][1]) || (playermove[2]==arr[26][0]&&playermove[0]==arr[26][1]) || (playermove[2]==arr[26][0]&&playermove[1]==arr[26][1]) || (playermove[1]==arr[26][0]&&playermove[2]==arr[26][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            break;
-            
-        }  //end of the while loop which is used to assign the next move which move to block the winning of the player        
-        
-        if(moved==false){
-            while(true){
-            if((mymove[0]==arr[0][0]&&mymove[2]==arr[0][1]) || (mymove[2]==arr[0][0]&&mymove[0]==arr[0][1]) || (mymove[2]==arr[0][0]&&mymove[1]==arr[0][1]) || (mymove[1]==arr[0][0]&&mymove[2]==arr[0][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[1][0]&&mymove[2]==arr[1][1]) || (mymove[2]==arr[1][0]&&mymove[0]==arr[1][1]) || (mymove[2]==arr[1][0]&&mymove[1]==arr[1][1]) || (mymove[1]==arr[1][0]&&mymove[2]==arr[1][1])){
-                if(occupied[1]==false){
-                    mymove[3]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[2][0]&&mymove[2]==arr[2][1]) || (mymove[2]==arr[2][0]&&mymove[0]==arr[2][1]) || (mymove[2]==arr[2][0]&&mymove[1]==arr[2][1]) || (mymove[1]==arr[2][0]&&mymove[2]==arr[2][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[3][0]&&mymove[2]==arr[3][1]) || (mymove[2]==arr[3][0]&&mymove[0]==arr[3][1]) || (mymove[2]==arr[3][0]&&mymove[1]==arr[3][1]) || (mymove[1]==arr[3][0]&&mymove[2]==arr[3][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[4][0]&&mymove[2]==arr[4][1]) || (mymove[2]==arr[4][0]&&mymove[0]==arr[4][1]) || (mymove[2]==arr[4][0]&&mymove[1]==arr[4][1]) || (mymove[1]==arr[4][0]&&mymove[2]==arr[4][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[5][0]&&mymove[2]==arr[5][1]) || (mymove[2]==arr[5][0]&&mymove[0]==arr[5][1]) || (mymove[2]==arr[5][0]&&mymove[1]==arr[5][1]) || (mymove[1]==arr[5][0]&&mymove[2]==arr[5][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[6][0]&&mymove[2]==arr[6][1]) || (mymove[2]==arr[6][0]&&mymove[0]==arr[6][1]) || (mymove[2]==arr[6][0]&&mymove[1]==arr[6][1]) || (mymove[1]==arr[6][0]&&mymove[2]==arr[6][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[7][0]&&mymove[2]==arr[7][1]) || (mymove[2]==arr[7][0]&&mymove[0]==arr[7][1]) || (mymove[2]==arr[7][0]&&mymove[1]==arr[7][1]) || (mymove[1]==arr[7][0]&&mymove[2]==arr[7][1])){
-                if(occupied[7]==false){
-                    mymove[3]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[8][0]&&mymove[2]==arr[8][1]) || (mymove[2]==arr[8][0]&&mymove[0]==arr[8][1]) || (mymove[2]==arr[8][0]&&mymove[1]==arr[8][1]) || (mymove[1]==arr[8][0]&&mymove[2]==arr[8][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[9][0]&&mymove[2]==arr[9][1]) || (mymove[2]==arr[9][0]&&mymove[0]==arr[9][1]) || (mymove[2]==arr[9][0]&&mymove[1]==arr[9][1]) || (mymove[1]==arr[9][0]&&mymove[2]==arr[9][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[10][0]&&mymove[2]==arr[10][1]) || (mymove[2]==arr[10][0]&&mymove[0]==arr[10][1]) || (mymove[2]==arr[10][0]&&mymove[1]==arr[10][1]) || (mymove[1]==arr[10][0]&&mymove[2]==arr[10][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[11][0]&&mymove[2]==arr[11][1]) || (mymove[2]==arr[11][0]&&mymove[0]==arr[11][1]) || (mymove[2]==arr[11][0]&&mymove[1]==arr[11][1]) || (mymove[1]==arr[11][0]&&mymove[2]==arr[11][1])){
-                if(occupied[5]==false){
-                    mymove[3]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[12][0]&&mymove[2]==arr[12][1]) || (mymove[2]==arr[12][0]&&mymove[0]==arr[12][1]) || (mymove[2]==arr[12][0]&&mymove[1]==arr[12][1]) || (mymove[1]==arr[12][0]&&mymove[2]==arr[12][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[13][0]&&mymove[2]==arr[13][1]) || (mymove[2]==arr[13][0]&&mymove[0]==arr[13][1]) || (mymove[2]==arr[13][0]&&mymove[1]==arr[13][1]) || (mymove[1]==arr[13][0]&&mymove[2]==arr[13][1])){
-                if(occupied[5]==false){
-                    mymove[3]=5;
-                    occupied[5]=true;
-                    gameButton[5].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[14][0]&&mymove[2]==arr[14][1]) || (mymove[2]==arr[14][0]&&mymove[0]==arr[14][1]) || (mymove[2]==arr[14][0]&&mymove[1]==arr[14][1]) || (mymove[1]==arr[14][0]&&mymove[2]==arr[14][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[15][0]&&mymove[2]==arr[15][1]) || (mymove[2]==arr[15][0]&&mymove[0]==arr[15][1]) || (mymove[2]==arr[15][0]&&mymove[1]==arr[15][1]) || (mymove[1]==arr[15][0]&&mymove[2]==arr[15][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[16][0]&&mymove[2]==arr[16][1]) || (mymove[2]==arr[16][0]&&mymove[0]==arr[16][1]) || (mymove[2]==arr[16][0]&&mymove[1]==arr[16][1]) || (mymove[1]==arr[16][0]&&mymove[2]==arr[16][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[17][0]&&mymove[2]==arr[17][1]) || (mymove[2]==arr[17][0]&&mymove[0]==arr[17][1]) || (mymove[2]==arr[17][0]&&mymove[1]==arr[17][1]) || (mymove[1]==arr[17][0]&&mymove[2]==arr[17][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[18][0]&&mymove[2]==arr[18][1]) || (mymove[2]==arr[18][0]&&mymove[0]==arr[18][1]) || (mymove[2]==arr[18][0]&&mymove[1]==arr[18][1]) || (mymove[1]==arr[18][0]&&mymove[2]==arr[18][1])){
-                if(occupied[1]==false){
-                    mymove[3]=1;
-                    occupied[1]=true;
-                    gameButton[1].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[19][0]&&mymove[2]==arr[19][1]) || (mymove[2]==arr[19][0]&&mymove[0]==arr[19][1]) || (mymove[2]==arr[19][0]&&mymove[1]==arr[19][1]) || (mymove[1]==arr[19][0]&&mymove[2]==arr[19][1])){
-                if(occupied[0]==false){
-                    mymove[3]=0;
-                    occupied[0]=true;
-                    gameButton[0].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[20][0]&&mymove[2]==arr[20][1]) || (mymove[2]==arr[20][0]&&mymove[0]==arr[20][1]) || (mymove[2]==arr[20][0]&&mymove[1]==arr[20][1]) || (mymove[1]==arr[20][0]&&mymove[2]==arr[20][1])){
-                if(occupied[4]==false){
-                    mymove[3]=4;
-                    occupied[4]=true;
-                    gameButton[4].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[21][0]&&mymove[2]==arr[21][1]) || (mymove[2]==arr[21][0]&&mymove[0]==arr[21][1]) || (mymove[2]==arr[21][0]&&mymove[1]==arr[21][1]) || (mymove[1]==arr[21][0]&&mymove[2]==arr[21][1])){
-                if(occupied[3]==false){
-                    mymove[3]=3;
-                    occupied[3]=true;
-                    gameButton[3].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[22][0]&&mymove[2]==arr[22][1]) || (mymove[2]==arr[22][0]&&mymove[0]==arr[22][1]) || (mymove[2]==arr[22][0]&&mymove[1]==arr[22][1]) || (mymove[1]==arr[22][0]&&mymove[2]==arr[22][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[23][0]&&mymove[2]==arr[23][1]) || (mymove[2]==arr[23][0]&&mymove[0]==arr[23][1]) || (mymove[2]==arr[23][0]&&mymove[1]==arr[23][1]) || (mymove[1]==arr[23][0]&&mymove[2]==arr[23][1])){
-                if(occupied[2]==false){
-                    mymove[3]=2;
-                    occupied[2]=true;
-                    gameButton[2].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[24][0]&&mymove[2]==arr[24][1]) || (mymove[2]==arr[24][0]&&mymove[0]==arr[24][1]) || (mymove[2]==arr[24][0]&&mymove[1]==arr[24][1]) || (mymove[1]==arr[24][0]&&mymove[2]==arr[24][1])){
-                if(occupied[8]==false){
-                    mymove[3]=8;
-                    occupied[8]=true;
-                    gameButton[8].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[25][0]&&mymove[2]==arr[25][1]) || (mymove[2]==arr[25][0]&&mymove[0]==arr[25][1]) || (mymove[2]==arr[25][0]&&mymove[1]==arr[25][1]) || (mymove[1]==arr[25][0]&&mymove[2]==arr[25][1])){
-                if(occupied[7]==false){
-                    mymove[3]=7;
-                    occupied[7]=true;
-                    gameButton[7].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            if((mymove[0]==arr[26][0]&&mymove[2]==arr[26][1]) || (mymove[2]==arr[26][0]&&mymove[0]==arr[26][1]) || (mymove[2]==arr[26][0]&&mymove[1]==arr[26][1]) || (mymove[1]==arr[26][0]&&mymove[2]==arr[26][1])){
-                if(occupied[6]==false){
-                    mymove[3]=6;
-                    occupied[6]=true;
-                    gameButton[6].setIcon(cross);
-                    moved=true;
-                    break;
-                }
-            }
-            break;
-            
-        }
-        }
-            
-        if(moved==false){
-            int i;
-            while(true){
-                i=new Random().nextInt(9);
-                if(occupied[i]==false){
-                    mymove[3]=i;
-                    occupied[i]=true;
-                    gameButton[i].setIcon(cross);
-                    moved=true;
-                    break;
-                    
-                }
-                
-            }
-        }
-        
-        
-    }
     
-    public void fifth_move(){
-        System.out.println("fifth move");
-        for(int i=0;i<9;i++){
-            if(occupied[i]==false){
-                gameButton[i].setIcon(cross);
-                break;
-            }
+    Front front=new Front();
+    
+    public void select(){
+        System.out.println(""+count);
+        Icon icon = gameButton1.getIcon();
+        if((gameButton1.getIcon()==ovel && gameButton2.getIcon()==ovel && gameButton3.getIcon()==ovel)||(gameButton4.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton6.getIcon()==ovel)||(gameButton7.getIcon()==ovel && gameButton8.getIcon()==ovel && gameButton9.getIcon()==ovel)){
+            System.out.println(player1Name+" won the game");
+            playerscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+            //front.setVisible(rootPaneCheckingEnabled);
+           // front.setTitle("Tic Tac Toe");
+           // front.setSize(330, 470);
+           // this.setVisible(false);
+        }else if ((gameButton1.getIcon()==ovel && gameButton4.getIcon()==ovel && gameButton7.getIcon()==ovel)||(gameButton2.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton8.getIcon()==ovel)||(gameButton3.getIcon()==ovel && gameButton6.getIcon()==ovel && gameButton9.getIcon()==ovel)){
+            System.out.println(player1Name+" won the game");
+            playerscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+            //front.setVisible(rootPaneCheckingEnabled);
+            //front.setTitle("Tic Tac Toe");
+            //front.setSize(330,470);
+          //  this.setVisible(false);
+        }else if((gameButton1.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton9.getIcon()==ovel)||(gameButton3.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton7.getIcon()==ovel)){
+            System.out.println(player1Name+" won the game");
+            playerscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+            //front.setVisible(rootPaneCheckingEnabled);
+            //front.setTitle("Tic Tac Toe");
+            //front.setSize(330,470);
+           // this.setVisible(false);
+        }else if((gameButton1.getIcon()==cross && gameButton5.getIcon()==cross && gameButton9.getIcon()==cross)||(gameButton3.getIcon()==cross && gameButton5.getIcon()==cross && gameButton7.getIcon()==cross)){
+            System.out.println(Computer+" won the game");
+            comscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, Computer+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+           // front.setVisible(rootPaneCheckingEnabled);
+           // front.setTitle("Tic Tac Toe");
+          //  front.setSize(330,470);
+           // this.setVisible(false);
+        }else if ((gameButton1.getIcon()==cross && gameButton4.getIcon()==cross && gameButton7.getIcon()==cross)||(gameButton2.getIcon()==cross && gameButton5.getIcon()==cross && gameButton8.getIcon()==cross)||(gameButton3.getIcon()==cross && gameButton6.getIcon()==cross && gameButton9.getIcon()==cross)){
+            System.out.println(Computer+" won the game");
+            comscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, Computer+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+           // front.setVisible(rootPaneCheckingEnabled);
+           // front.setTitle("Tic Tac Toe");
+           // front.setSize(330,470);
+           // this.setVisible(false);
+        }else if((gameButton1.getIcon()==cross && gameButton2.getIcon()==cross && gameButton3.getIcon()==cross)||(gameButton4.getIcon()==cross && gameButton5.getIcon()==cross && gameButton6.getIcon()==cross)||(gameButton7.getIcon()==cross && gameButton8.getIcon()==cross && gameButton9.getIcon()==cross)){
+            System.out.println(Computer+" won the game");
+            comscore++;
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, Computer+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+            //front.setVisible(rootPaneCheckingEnabled);
+           // front.setTitle("Tic Tac Toe");
+           // front.setSize(330,470);
+           // this.setVisible(false);
+        }else if(count==5) {
+            JOptionPane.showMessageDialog(SinglePlayerGame.this, "Game Tied","",JOptionPane.INFORMATION_MESSAGE,box);
+
+            //front.setVisible(rootPaneCheckingEnabled);
+            //front.setTitle("Tic Tac Toe");
+            //front.setSize(330,470);
+           // this.setVisible(false);
+        }
+        else if(count==4){
+            if(a!=0 && b!=0 && c!=0 && d!=0 && e!=0 && f!=0 && g!=0 && h!=0 && i!=0)
+                JOptionPane.showMessageDialog(SinglePlayerGame.this, "Game Tied","",JOptionPane.INFORMATION_MESSAGE,box); 
         }
     }
-    Front front=new Front();
-     public void select(){
-            System.out.println(""+count);
-        Icon icon = gameButton1.getIcon();
-            if((gameButton1.getIcon()==ovel && gameButton2.getIcon()==ovel && gameButton3.getIcon()==ovel)||(gameButton4.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton6.getIcon()==ovel)||(gameButton7.getIcon()==ovel && gameButton8.getIcon()==ovel && gameButton9.getIcon()==ovel)){
-                System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330, 470);
-                this.setVisible(false);
-            }else if ((gameButton1.getIcon()==ovel && gameButton4.getIcon()==ovel && gameButton7.getIcon()==ovel)||(gameButton2.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton8.getIcon()==ovel)||(gameButton3.getIcon()==ovel && gameButton6.getIcon()==ovel && gameButton9.getIcon()==ovel)){
-                System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }else if((gameButton1.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton9.getIcon()==ovel)||(gameButton3.getIcon()==ovel && gameButton5.getIcon()==ovel && gameButton7.getIcon()==ovel)){
-                System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }else if((gameButton1.getIcon()==cross && gameButton5.getIcon()==cross && gameButton9.getIcon()==cross)||(gameButton3.getIcon()==cross && gameButton5.getIcon()==cross && gameButton7.getIcon()==cross)){
-                System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }else if ((gameButton1.getIcon()==cross && gameButton4.getIcon()==cross && gameButton7.getIcon()==cross)||(gameButton2.getIcon()==cross && gameButton5.getIcon()==cross && gameButton8.getIcon()==cross)||(gameButton3.getIcon()==cross && gameButton6.getIcon()==cross && gameButton9.getIcon()==cross)){
-                System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }else if((gameButton1.getIcon()==cross && gameButton2.getIcon()==cross && gameButton3.getIcon()==cross)||(gameButton4.getIcon()==cross && gameButton5.getIcon()==cross && gameButton6.getIcon()==cross)||(gameButton7.getIcon()==cross && gameButton8.getIcon()==cross && gameButton9.getIcon()==cross)){
-                System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }else if(count==9) {
-                JOptionPane.showMessageDialog(SinglePlayerGame.this, "Game Tied","",JOptionPane.INFORMATION_MESSAGE,box);
-                
-                front.setVisible(rootPaneCheckingEnabled);
-                front.setTitle("Tic Tac Toe");
-                front.setSize(330,470);
-                this.setVisible(false);
-            }
-        }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JButton beginButton;
+    private javax.swing.JLabel computerScoreText;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton gameButton1;
     private javax.swing.JButton gameButton2;
@@ -1625,6 +888,10 @@ gameButton6.setIcon(ovel);
     private javax.swing.JButton gameButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel playerScoreText;
+    private javax.swing.JButton resetButton;
+    private javax.swing.JLabel score;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author HP
  */
-public class Tic extends javax.swing.JFrame {
+public class MultiPlayerGame extends javax.swing.JFrame {
 
     /**
      * Creates new form Tic
@@ -23,19 +23,28 @@ public class Tic extends javax.swing.JFrame {
     Players player;
     String player1Name;
     String player2Name;
-    public Tic() {
+    
+    int player1score,player2score;
+    public MultiPlayerGame() {
         
        
     }
-    public Tic(String player1Name, String Player2Name){
+    public MultiPlayerGame(String player1Name, String Player2Name){
         initComponents();
         setLocation(500, 200);
         cross=new ImageIcon("Cross.png");
         ovel=new ImageIcon("oo.png");
-        box=new ImageIcon("tinker.gif");
+        box=new ImageIcon("t.png");
         player=new Players();
        this.player1Name=player1Name;
        this.player2Name=Player2Name;
+       player2score=0;
+       player1score=0;
+       name1.setText(player1Name);
+       name2.setText(Player2Name);
+       score1.setText(String.valueOf(player1score));
+       score2.setText(String.valueOf(player2score));
+       
     }
      
 
@@ -59,19 +68,25 @@ public class Tic extends javax.swing.JFrame {
         but7 = new javax.swing.JButton();
         but8 = new javax.swing.JButton();
         but9 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        name1 = new javax.swing.JLabel();
+        name2 = new javax.swing.JLabel();
+        ResetButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JToggleButton();
+        score1 = new javax.swing.JLabel();
+        score2 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Papyrus", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tic Tac Toe");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(26, 17, 280, 90);
+        jLabel1.setBounds(120, 20, 280, 90);
 
         but1.setBackground(new java.awt.Color(204, 204, 204));
         but1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
@@ -163,12 +178,61 @@ public class Tic extends javax.swing.JFrame {
         jPanel1.add(but9);
         but9.setBounds(200, 270, 75, 75);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tictac/tumblr_static_elsa.png"))); // NOI18N
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(0, 0, 320, 390);
+        name1.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        name1.setText("                    ");
+        name1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(name1);
+        name1.setBounds(300, 140, 100, 30);
+
+        name2.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        name2.setText("                    ");
+        name2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(name2);
+        name2.setBounds(300, 200, 100, 30);
+
+        ResetButton.setBackground(new java.awt.Color(0, 0, 0));
+        ResetButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
+        ResetButton.setForeground(new java.awt.Color(65, 177, 230));
+        ResetButton.setText("Reset");
+        ResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(ResetButton);
+        ResetButton.setBounds(50, 360, 110, 30);
+
+        exitButton.setBackground(new java.awt.Color(0, 0, 0));
+        exitButton.setFont(new java.awt.Font("Papyrus", 1, 24)); // NOI18N
+        exitButton.setForeground(new java.awt.Color(65, 177, 230));
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(exitButton);
+        exitButton.setBounds(180, 360, 100, 30);
+
+        score1.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        score1.setText("                    ");
+        score1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(score1);
+        score1.setBounds(420, 140, 60, 30);
+
+        score2.setFont(new java.awt.Font("Papyrus", 1, 18)); // NOI18N
+        score2.setText("                    ");
+        score2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(score2);
+        score2.setBounds(420, 200, 60, 30);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tictac/tumblr_static_elsa.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(4, 4, 520, 410);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 330, 430);
+        jPanel1.setBounds(0, 0, 510, 410);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -312,58 +376,88 @@ public class Tic extends javax.swing.JFrame {
         count++;
         select();
     }//GEN-LAST:event_but9ActionPerformed
+
+    private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed
+        // TODO add your handling code here:
+        but1.setIcon(null);
+        but2.setIcon(null);
+        but3.setIcon(null);
+        but4.setIcon(null);
+        but5.setIcon(null);
+        but6.setIcon(null);
+        but7.setIcon(null);
+        but8.setIcon(null);
+        but9.setIcon(null);
+        score1.setText(String.valueOf(player1score));
+       score2.setText(String.valueOf(player2score));
+       count=0;
+        
+
+    }//GEN-LAST:event_ResetButtonActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        // TODO add your handling code here:
+        new MultiPlayerDA().write(player1Name, player1score, player2Name, player2score);
+        System.exit(0);
+    }//GEN-LAST:event_exitButtonActionPerformed
         public void select(){
             System.out.println(""+count);
         Icon icon = but1.getIcon();
             if((but1.getIcon()==ovel && but2.getIcon()==ovel && but3.getIcon()==ovel)||(but4.getIcon()==ovel && but5.getIcon()==ovel && but6.getIcon()==ovel)||(but7.getIcon()==ovel && but8.getIcon()==ovel && but9.getIcon()==ovel)){
                 System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330, 430);
-                setVisible(false);
+                player1score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+               // player.setVisible(rootPaneCheckingEnabled);
+               // player.setTitle("Tic Tac Toe");
+               // player.setSize(330, 430);
+               // setVisible(false);
             }else if ((but1.getIcon()==ovel && but4.getIcon()==ovel && but7.getIcon()==ovel)||(but2.getIcon()==ovel && but5.getIcon()==ovel && but8.getIcon()==ovel)||(but3.getIcon()==ovel && but6.getIcon()==ovel && but9.getIcon()==ovel)){
                 System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+                player1score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+               // player.setVisible(rootPaneCheckingEnabled);
+               // player.setTitle("Tic Tac Toe");
+                //player.setSize(330,430);
+               // setVisible(false);
             }else if((but1.getIcon()==ovel && but5.getIcon()==ovel && but9.getIcon()==ovel)||(but3.getIcon()==ovel && but5.getIcon()==ovel && but7.getIcon()==ovel)){
                 System.out.println(player1Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+                player1score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player1Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+//                player.setVisible(rootPaneCheckingEnabled);
+//                player.setTitle("Tic Tac Toe");
+//                player.setSize(330,430);
+//                setVisible(false);
             }else if((but1.getIcon()==cross && but5.getIcon()==cross && but9.getIcon()==cross)||(but3.getIcon()==cross && but5.getIcon()==cross && but7.getIcon()==cross)){
                 System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+                player2score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+//                player.setVisible(rootPaneCheckingEnabled);
+//                player.setTitle("Tic Tac Toe");
+//                player.setSize(330,430);
+//                setVisible(false);
             }else if ((but1.getIcon()==cross && but4.getIcon()==cross && but7.getIcon()==cross)||(but2.getIcon()==cross && but5.getIcon()==cross && but8.getIcon()==cross)||(but3.getIcon()==cross && but6.getIcon()==cross && but9.getIcon()==cross)){
                 System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+                player2score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+//                player.setVisible(rootPaneCheckingEnabled);
+//                player.setTitle("Tic Tac Toe");
+//                player.setSize(330,430);
+//                setVisible(false);
             }else if((but1.getIcon()==cross && but2.getIcon()==cross && but3.getIcon()==cross)||(but4.getIcon()==cross && but5.getIcon()==cross && but6.getIcon()==cross)||(but7.getIcon()==cross && but8.getIcon()==cross && but9.getIcon()==cross)){
                 System.out.println(player2Name+" won the game");
-                JOptionPane.showMessageDialog(Tic.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+                player2score++;
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, player2Name+" won the game","",JOptionPane.INFORMATION_MESSAGE,box);
+//                player.setVisible(rootPaneCheckingEnabled);
+//                player.setTitle("Tic Tac Toe");
+//                player.setSize(330,430);
+//                setVisible(false);
             }else if(count==9) {
-                JOptionPane.showMessageDialog(Tic.this, "Game Tied","",JOptionPane.INFORMATION_MESSAGE,box);
+                JOptionPane.showMessageDialog(MultiPlayerGame.this, "Game Tied","",JOptionPane.INFORMATION_MESSAGE,box);
                 
-                player.setVisible(rootPaneCheckingEnabled);
-                player.setTitle("Tic Tac Toe");
-                player.setSize(330,430);
-                setVisible(false);
+//                player.setVisible(rootPaneCheckingEnabled);
+//                player.setTitle("Tic Tac Toe");
+//                player.setSize(330,430);
+//                setVisible(false);
             }
         }
     /**
@@ -383,25 +477,26 @@ public class Tic extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiPlayerGame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiPlayerGame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiPlayerGame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiPlayerGame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tic().setVisible(true);
+                new MultiPlayerGame().setVisible(true);
                 
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ResetButton;
     private javax.swing.JButton but1;
     private javax.swing.JButton but2;
     private javax.swing.JButton but3;
@@ -411,8 +506,13 @@ public class Tic extends javax.swing.JFrame {
     private javax.swing.JButton but7;
     private javax.swing.JButton but8;
     private javax.swing.JButton but9;
+    private javax.swing.JToggleButton exitButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel name1;
+    private javax.swing.JLabel name2;
+    private javax.swing.JLabel score1;
+    private javax.swing.JLabel score2;
     // End of variables declaration//GEN-END:variables
 }

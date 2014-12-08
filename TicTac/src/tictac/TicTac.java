@@ -1,3 +1,4 @@
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -15,6 +16,7 @@ public class TicTac {
      */
     public static void main(String[] args) {
         // TODO code application logic 
+        new MultiPlayerDA().write("Tharaka", 5, "Dilan",0 );
         Front front=new Front();
         front.setVisible(true);
         front.setTitle("Tic Tac Toe");
